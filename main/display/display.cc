@@ -47,8 +47,10 @@ void Display::SetChatMessage(const char* role, const char* content) {
 
 void Display::SetTheme(Theme* theme) {
     current_theme_ = theme;
+    if (theme != nullptr){
     Settings settings("display", true);
     settings.SetString("theme", theme->name());
+    }
 }
 
 void Display::SetPowerSaveMode(bool on) {

@@ -119,6 +119,166 @@ void McpServer::AddCommonTools() {
             });
     }
 #endif
+    auto limbs = Board::GetInstance().GetLimbs();
+    if (limbs){
+        AddTool("self.limbs.set_forward",
+            "前进，向前运动3秒钟",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<< 前进，向前运动");
+                limbs->Forward();
+                auto& app = Application::GetInstance();
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(3000));
+                    limbs->StopWard(); 
+                    ESP_LOGI(TAG, "<< 停止向前");
+                });  
+                return true;
+            });
+        AddTool("self.limbs.set_backward",
+            "后退，向后运动3秒钟",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<<  后退，向后运动");
+                limbs->Backward();
+                auto& app = Application::GetInstance();
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(3000));
+                    limbs->StopWard(); 
+                    ESP_LOGI(TAG, "<< 停止后退");
+                });  
+                return true;
+            });
+        AddTool("self.limbs.set_front_lift",
+            "抬前腿，站立起来，站得高看的远",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<< 马达抬前腿");
+                limbs->FrontLift();  
+                auto& app = Application::GetInstance();
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(2000));
+                    limbs->StopLift(); 
+                    ESP_LOGI(TAG, "<< 停止抬前腿");
+                });                
+                return true;
+            });
+        AddTool("self.limbs.set_rear_lift",
+            "抬后腿，翘屁股",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<< 马达抬后腿");
+                limbs->RearLift();  
+                auto& app = Application::GetInstance();
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(2000));
+                    limbs->StopLift(); 
+                    ESP_LOGI(TAG, "<< 停止翘屁股");
+                });                
+                return true;
+            });
+        AddTool("self.limbs.set_stop_ward",
+            "停下，原地待命，一动不动，木头人",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<< 停下，原地待命");
+                limbs->StopWard(); 
+                limbs->StopLift();                 
+                return true;
+            });
+        AddTool("self.limbs.set_turn_right",
+            "向右转圈",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<< 向右转圈");
+                limbs->TurnRight();     
+                auto& app = Application::GetInstance();
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(3000));
+                    limbs->StopWard(); 
+                    ESP_LOGI(TAG, "<< 停止向右转圈");
+                });             
+                return true;
+            });
+        AddTool("self.limbs.set_turn_left",
+            "向左转圈",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                ESP_LOGI(TAG, "<< 向左转圈");
+                limbs->TurnLeft();  
+                auto& app = Application::GetInstance();
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(3000));
+                    limbs->StopWard(); 
+                    ESP_LOGI(TAG, "<< 停止向左转圈");
+                });              
+                return true;
+            });
+        AddTool("self.limbs.set_turn_self",
+            "原地转圈",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                auto& app = Application::GetInstance();
+                limbs->TurnAround(); 
+                ESP_LOGI(TAG, "<< 原地转圈");
+                app.Schedule([limbs]() {
+                    vTaskDelay(pdMS_TO_TICKS(3000));
+                    limbs->StopWard(); 
+                    ESP_LOGI(TAG, "<< 停止原地转圈");
+                });
+                return true;
+            });
+        AddTool("self.limbs.set_color",
+            "氛围灯，开关氛围灯，更有精彩",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                static bool isOn = false;
+                isOn = !isOn;
+                limbs->SetAmbient(isOn); 
+                ESP_LOGI(TAG, "<< 氛围灯，开关氛围灯，更有精彩");
+                return true;
+            });
+        AddTool("self.limbs.set_red",
+            "打开红灯",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                limbs->SetColor(RED); 
+                ESP_LOGI(TAG, "<< 打开红灯");
+                return true;
+            });
+        AddTool("self.limbs.set_blue",
+            "打开蓝灯",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                limbs->SetColor(BLUE); 
+                ESP_LOGI(TAG, "<< 打开蓝灯");
+                return true;
+            });
+        AddTool("self.limbs.set_green",
+            "打开绿灯",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                limbs->SetColor(GREEN); 
+                ESP_LOGI(TAG, "<< 打开绿灯");
+                return true;
+            });
+        AddTool("self.limbs.set_black",
+            "关闭灯光",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                limbs->SetColor(BLACK); 
+                ESP_LOGI(TAG, "<< 关闭灯光");
+                return true;
+            });
+        AddTool("self.limbs.set_white",
+            "打开白灯",
+            PropertyList(),
+            [limbs](const PropertyList& properties) -> ReturnValue {
+                limbs->SetColor(WHITE); 
+                ESP_LOGI(TAG, "<< 打开白灯");
+                return true;
+            });
+    }
 
     // Restore the original tools list to the end of the tools list
     tools_.insert(tools_.end(), original_tools.begin(), original_tools.end());

@@ -61,6 +61,10 @@ Camera* Board::GetCamera() {
     return nullptr;
 }
 
+Limbs* Board::GetLimbs()
+{
+    return nullptr;
+}
 Led* Board::GetLed() {
     static NoLed led;
     return &led;

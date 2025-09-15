@@ -27,6 +27,18 @@
 
 #endif
 
+#define LED_RED             GPIO_NUM_12
+#define LED_BLUE            GPIO_NUM_14
+#define LED_GREEN           GPIO_NUM_13
+#define LED_COLOR           GPIO_NUM_20
+#define MOTOR_RIGHT_A       GPIO_NUM_17
+#define MOTOR_RIGHT_B       GPIO_NUM_18
+#define MOTOR_FRONT_SUB_A   GPIO_NUM_8
+#define MOTOR_FRONT_SUB_B   GPIO_NUM_3
+#define MOTOR_LEFT_A        GPIO_NUM_9
+#define MOTOR_LEFT_B        GPIO_NUM_46
+#define MOTOR_REAR_SUB_A    GPIO_NUM_11
+#define MOTOR_REAR_SUB_B    GPIO_NUM_10
 
 #define BUILTIN_LED_GPIO        GPIO_NUM_48
 #define BOOT_BUTTON_GPIO        GPIO_NUM_0
@@ -54,6 +66,6 @@
 
 
 // A MCP Test: Control a lamp
-#define LAMP_GPIO GPIO_NUM_18
+#define LAMP_GPIO GPIO_NUM_13
 
 #endif // _BOARD_CONFIG_H_

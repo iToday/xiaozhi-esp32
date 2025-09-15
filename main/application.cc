@@ -9,6 +9,7 @@
 #include "mcp_server.h"
 #include "assets.h"
 #include "settings.h"
+#include "motor/gpio_motor.h"
 
 #include <cstring>
 #include <esp_log.h>
@@ -241,6 +242,12 @@ void Application::Alert(const char* status, const char* message, const char* emo
     display->SetChatMessage("system", message);
     if (!sound.empty()) {
         audio_service_.PlaySound(sound);
+    }
+    auto& board = Board::GetInstance();                       
+    auto limbs = board.GetLimbs();
+    if (limbs)
+    {
+        limbs->SetEmoticon(emotion);
     }
 }
 
@@ -482,6 +489,12 @@ void Application::Start() {
             if (cJSON_IsString(emotion)) {
                 Schedule([this, display, emotion_str = std::string(emotion->valuestring)]() {
                     display->SetEmotion(emotion_str.c_str());
+                    auto& board = Board::GetInstance();                       
+                    auto limbs = board.GetLimbs();
+                    if (limbs)
+                    {
+                        limbs->SetEmoticon(emotion_str.c_str());
+                    }
                 });
             }
         } else if (strcmp(type->valuestring, "mcp") == 0) {

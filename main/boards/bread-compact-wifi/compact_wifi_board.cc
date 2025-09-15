@@ -9,6 +9,7 @@
 #include "lamp_controller.h"
 #include "led/single_led.h"
 #include "assets/lang_config.h"
+#include "motor/gpio_motor.h"
 
 #include <wifi_station.h>
 #include <esp_log.h>
@@ -169,6 +170,13 @@ public:
         return &led;
     }
 
+    virtual Limbs *GetLimbs() override
+    {
+        static Limbs limbs(MOTOR_LEFT_A, MOTOR_LEFT_B, MOTOR_FRONT_SUB_A, MOTOR_FRONT_SUB_B, 
+                           MOTOR_RIGHT_A, MOTOR_RIGHT_B, MOTOR_REAR_SUB_A, MOTOR_REAR_SUB_B);
+        limbs.InitEmoji(LED_RED, LED_GREEN, LED_BLUE, LED_COLOR);
+        return &limbs;
+    }
     virtual AudioCodec* GetAudioCodec() override {
 #ifdef AUDIO_I2S_METHOD_SIMPLEX
         static NoAudioCodecSimplex audio_codec(AUDIO_INPUT_SAMPLE_RATE, AUDIO_OUTPUT_SAMPLE_RATE,

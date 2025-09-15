@@ -4,7 +4,7 @@
 #include "emoji_collection.h"
 
 #ifdef LVGL_VERSION_MAJOR
-#define HAVE_LVGL 1
+//#define HAVE_LVGL 1
 #include <lvgl.h>
 #endif
 
